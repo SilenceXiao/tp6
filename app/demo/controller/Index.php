@@ -7,4 +7,8 @@ class Index extends BaseController{
     public function demo(){
         return 'demo';
     }
+
+    public function hello(){
+        return 'hello';
+    }
 }

@@ -9,7 +9,6 @@ class Demo extends Model{
     //获取器
     public function getStatusAttr($value){
         $status = [1 => '正常', 2 => '取消'];
-        dump(123,$value);
 
         return $status[$value];
     }
@@ -19,5 +18,15 @@ class Demo extends Model{
         $status = [1 => '正常', 2 => '取消'];
         //返回数据需要转换的字段的值
         return $status[$data['status']];
+    }
+
+    public function getDemoDataByCategoryId($category_id,$limit=10){
+        if(empty($category_id)){
+            return [];
+        }
+        return $this->where('category_id',$category_id)
+            ->limit($limit)
+            ->select()
+            ->toArray();
     }
 }
