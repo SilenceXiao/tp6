@@ -2,7 +2,7 @@
 namespace app\controller;
 
 use app\BaseController;
-use app\model\Demo;
+use app\common\model\mysql\Demo;
 use think\facade\Db;
 class Data extends BaseController{
 

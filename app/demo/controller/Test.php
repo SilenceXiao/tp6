@@ -2,7 +2,7 @@
 namespace app\demo\controller;
 
 use app\BaseController;
-use app\model\Demo;
+use app\common\business\Demo;
 use app\Request;
 
 class Test extends BaseController{
@@ -12,17 +12,8 @@ class Test extends BaseController{
             return show(config('status.error'),'參數錯誤');
         }
 
-        $model = new Demo();
-        $datas = $model->getDemoDataByCategoryId($category_id);
-        if(empty($datas)){
-            return show(config('status.success'),'沒有數據',$datas);
-        }
-        $categories = config("category");
-        foreach ($datas as $key => $data) {
-            $datas[$key]['category_name'] = $categories[$data['category_id']] ?? "其他";
-        }
+        $demo = new Demo();
+        $datas = $demo->getDemoDataByCategoryId($category_id);
         return show(config('status.success'),'ok',$datas);
-       
-
     }
 }

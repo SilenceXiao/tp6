@@ -1,5 +1,5 @@
 <?php
-namespace app\model;
+namespace app\common\model\mysql;
 
 use think\Model;
 
@@ -21,6 +21,7 @@ class Demo extends Model{
     }
 
     public function getDemoDataByCategoryId($category_id,$limit=10){
+        //减少不必要的io操作
         if(empty($category_id)){
             return [];
         }
