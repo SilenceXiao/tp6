@@ -17,3 +17,20 @@ function show($status,$message='error',$data=[],$httpStatus=200){
     ];
     return json($result,$httpStatus);
 }
+
+
+function captcha_img_admin($id = '', $domid = '',$width = '',$height = '',$model = ''): string
+{
+    $src = captcha_src($id);
+    $style = "";
+    if($width && $height){
+        $style = ' width='.$width.'" height="'.$height.'" ';
+    }
+    $domid = empty($domid) ? $domid : "id='" . $domid . "'";
+
+    if($model){
+        $src = '/'.$model.$src ;
+    }
+    return "<img src='{$src}' alt='captcha' " . $domid .$style. " onclick='this.src=\"{$src}?\"+Math.random();' />";
+
+}
