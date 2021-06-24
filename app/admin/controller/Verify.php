@@ -8,6 +8,8 @@ class Verify{
      * @return void
      */
     public function captcha(){
-        return Captcha::create('verify');
+        return captcha_img();
+        // return Captcha::create();
     }
+    
 }

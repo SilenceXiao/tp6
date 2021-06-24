@@ -6,21 +6,21 @@ use app\common\model\mysql\AdminUser;
 use think\facade\Db;
 use think\facade\View;
 use app\admin\controller\AdminBase;
-class Login extends BaseController{
+class Login extends AdminBase{
 
-    // public function initialize()
-    // {
-    //     if($this->isLogin()){
-    //         return $this->redirect(url('index/index'));
-    //     }
-    // }
+    public function initialize()
+    {
+        if($this->isLogin()){
+            return $this->redirect(url('index/index'));
+        }
+    }
     public function index(){
         return View::fetch();
     }
 
     public function md5(){
         echo md5("admin_user");
-        dump(session('admin_user'));
+        dump(session('admin_session'));
     }
 
     /**
@@ -71,7 +71,7 @@ class Login extends BaseController{
                 return show(config('status.error'),'登录失败');
             }
             //记录session
-            session(config('admin.session_admin'),$adminUser);
+            session(config('admin.admin_session'),$adminUser);
             Db::commit();
             return show(config('status.success'),'登录成功');
         } catch (\Exception $e) {
@@ -81,12 +81,12 @@ class Login extends BaseController{
 
     }
 
-    /**
-     * 登出
-     * @return void
-     */
-    public function loginOut(){
-        session(config('admin.admin_user'),null);
-        return redirect(url('login/index'));
-    }
+    // /**
+    //  * 登出
+    //  * @return void
+    //  */
+    // public function loginOut(){
+    //     session(config('admin.admin_user'),null);
+    //     return redirect(url('login/index'));
+    // }
 }

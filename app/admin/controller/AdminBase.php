@@ -11,13 +11,13 @@ class AdminBase extends BaseController{
     public function initialize(){
         parent::initialize();
 
-        if(!$this->isLogin()){
-            return $this->redirect(url('login/index'),302);
-        }
+        // if(!$this->isLogin()){
+        //     return $this->redirect(url('login/index'),302);
+        // }
     }
 
     public function isLogin(){
-        $this->adminUser = session(config('admin.admin_user'));
+        $this->adminUser = session(config('admin.admin_session'));
         if(empty($this->adminUser)){
             return false;
         }
