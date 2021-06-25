@@ -6,6 +6,8 @@ use app\common\model\mysql\AdminUser;
 use think\facade\Db;
 use think\facade\View;
 use app\admin\controller\AdminBase;
+use app\admin\validate\AdminUser as ValidateAdminUser;
+
 class Login extends AdminBase{
 
     public function initialize()
@@ -28,7 +30,7 @@ class Login extends AdminBase{
      * @return void
      */
     public function check(){
-        $name = $this->request->param('username','','trim');
+        $username = $this->request->param('username','','trim');
         $password = $this->request->param('password','','trim');
         $captcha = $this->request->param('captcha','','trim');
 
@@ -36,20 +38,33 @@ class Login extends AdminBase{
             return show(config('status.error'),'请求方式错误',[]);
         }
 
-        //验证参数
-        if( empty($name) || empty($password) || empty($captcha) ){
-            return show(config('status.error'),'参数不能为空');
-        }
+        // //验证参数 -- 原始验证方法
+        // if( empty($name) || empty($password) || empty($captcha) ){
+        //     return show(config('status.error'),'参数不能为空');
+        // }
 
         //验证码校验
-        if( !captcha_check($captcha) ){
-            return show(config('status.error'),'验证码错误');
+        // if( !captcha_check($captcha) ){
+        //     return show(config('status.error'),'验证码错误');
+        // }
+        
+        //引用validate验证机制参数验证
+        $data = [
+            'username' => $username,
+            'password' => $password,
+            'captcha' => $captcha,
+        ];
+       
+        $validate = new ValidateAdminUser();
+        $result = $validate->check($data);
+        if(!$result){
+            return show(config('status.error'),$validate->getError());
         }
 
         Db::startTrans();
         try {
             $model = new AdminUser();
-            $adminUser = $model->getAdminUserByUsername($name);
+            $adminUser = $model->getAdminUserByUsername($username);
             //用户是否存在
             if(empty($adminUser) || $adminUser['status'] != config('status.mysql.table_normal')){
                 return show(config('status.error'),'用户名不存在');

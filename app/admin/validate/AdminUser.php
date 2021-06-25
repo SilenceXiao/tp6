@@ -7,9 +7,9 @@ use think\Validate;
 class AdminUser extends Validate{
 
     protected $rule =[
-        'username' => 'required',
-        'password' => 'required',
-        'captcha' => 'required',
+        'username' => 'require',
+        'password' => 'require',
+        'captcha' => 'require|checkCaptcha',
     ];
 
     protected $message = [
@@ -18,7 +18,10 @@ class AdminUser extends Validate{
         'captcha' => '验证码必须',
     ];
 
-    public function checkCaptcha(){
-        
+    public function checkCaptcha($value, $rule, $data=[]){
+        if( !captcha_check($value) ){
+            return '验证码错误';
+        }
+        return true;
     }
 }
