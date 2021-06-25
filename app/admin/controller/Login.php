@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 
+use app\admin\business\AdminUser as BusinessAdminUser;
 use app\BaseController;
 use app\common\model\mysql\AdminUser;
 use think\facade\Db;
@@ -62,36 +63,53 @@ class Login extends AdminBase{
         }
 
         Db::startTrans();
+        // try {
+        //     $model = new AdminUser();
+        //     $adminUser = $model->getAdminUserByUsername($username);
+        //     //用户是否存在
+        //     if(empty($adminUser) || $adminUser['status'] != config('status.mysql.table_normal')){
+        //         return show(config('status.error'),'用户名不存在');
+        //     }
+        //     $adminUser = $adminUser->toArray;
+        //     //密码是否正确
+        //     if($adminUser['password'] != md5($password.'_user')){
+        //         return show(config('status.error'),'密码不正确');
+        //     }
+
+        //     $updateData = [
+        //         'update_time' => date('Y-m-d H:i:s',time()),
+        //         'last_login_time' => date('Y-m-d H:i:s',time()),
+        //         'last_login_ip' => request()->ip(),
+        //     ];
+
+        //     $res = $model->updateDataById($adminUser['id'],$updateData);
+        //     if(!$res){
+        //         return show(config('status.error'),'登录失败');
+        //     }
+        //     //记录session
+        //     session(config('admin.admin_session'),$adminUser);
+        //     Db::commit();
+        //     return show(config('status.success'),'登录成功');
+        // } catch (\Exception $e) {
+        //     Db::rollback();
+        //     return show(config('status.error'),'登录失败,内部异常');
+        // }
+
+        //业务层抽离
         try {
-            $model = new AdminUser();
-            $adminUser = $model->getAdminUserByUsername($username);
-            //用户是否存在
-            if(empty($adminUser) || $adminUser['status'] != config('status.mysql.table_normal')){
-                return show(config('status.error'),'用户名不存在');
-            }
             
-            //密码是否正确
-            if($adminUser['password'] != md5($password.'_user')){
-                return show(config('status.error'),'密码不正确');
-            }
-
-            $updateData = [
-                'update_time' => date('Y-m-d H:i:s',time()),
-                'last_login_time' => date('Y-m-d H:i:s',time()),
-                'last_login_ip' => request()->ip(),
-            ];
-
-            $res = $model->updateDataById($adminUser['id'],$updateData);
-            if(!$res){
+            $adminUserObj = new BusinessAdminUser();
+            $result = $adminUserObj->login($data);
+            if(!$result){
+                Db::rollback();
                 return show(config('status.error'),'登录失败');
             }
-            //记录session
-            session(config('admin.admin_session'),$adminUser);
             Db::commit();
             return show(config('status.success'),'登录成功');
+
         } catch (\Exception $e) {
             Db::rollback();
-            return show(config('status.error'),'登录失败,内部异常');
+            return show(config('status.error'),$e->getMessage());
         }
 
     }

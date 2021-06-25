@@ -12,14 +12,12 @@ class AdminUser extends Model{
      */
     public function getAdminUserByUsername($name){
         if(empty($name)){
-            return [];
+            return false;
         }
         $result = $this->where('username',trim($name))
             ->find();
-        if(!$result){
-            return [];
-        }
-        return $result->toArray();
+       
+        return $result;
     }
 
 
