@@ -25,7 +25,7 @@ class Sms {
         } catch (\think\exception\ValidateException $e) {
             return show(config('status.error'),$e->getError());
         }
-        if( BusinessSms::sendCode($phoneNumber,config('api.user_login_code')) ) {
+        if( BusinessSms::sendCode($phoneNumber,config('api.user_login_code'),'jd') ) {
             return show(config('status.success'),'发送验证码成功');
         }
 

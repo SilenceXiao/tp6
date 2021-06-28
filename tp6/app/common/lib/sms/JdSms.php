@@ -4,7 +4,7 @@ namespace app\common\lib\sms;
 
 use think\facade\Log;
 
-class AliSms implements SmsBase{
+class JdSms implements SmsBase{
 
     /**
      * 调用短信接口类库
@@ -19,7 +19,7 @@ class AliSms implements SmsBase{
         }
 
         //日志记录
-        Log::info("alisms-code-{$phone}-result",[$phone]);
+        Log::info("jdsms-code-{$phone}-result",[$phone]);
         //调用 短信接口 成功返回ture 失败返回false
 
         return true;
