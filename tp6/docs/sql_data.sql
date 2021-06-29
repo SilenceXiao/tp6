@@ -36,4 +36,7 @@ CREATE TABLE `mall_user` (
   KEY `usernme` (`username`),
   KEY `phone_number` (`phone_number`),
   KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `mall_user` 
+ADD COLUMN `token` varchar(255) NULL DEFAULT NULL COMMENT 'token' AFTER `operate_user`;
