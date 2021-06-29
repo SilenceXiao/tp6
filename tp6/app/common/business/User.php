@@ -38,9 +38,10 @@ class User {
         
         //如果存在更新token和失效时间
         if($tokenExist){
-            Cache::delete(config('redis.user_token_pre').$user['token']);
+            // Cache::delete(config('redis.user_token_pre').$user['token']);
+            $token = $user['token'];
         }
-        
+
         //生成token
         $token = Str::getLoginToken($data['phone']);
 

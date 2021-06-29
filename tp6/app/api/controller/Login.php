@@ -10,8 +10,8 @@ class Login extends BaseController{
 
     public function login(){
         $type = $this->request->param('type','','trim');
-        $code = $this->request->param('code','','trim');
-        $phone_number = $this->request->param('phone_number','','trim');
+        $code = $this->request->param('code','','intval');
+        $phone_number = $this->request->param('phone_number','','intval');
 
         if(!$this->request->isPost()){
             return show(config('status.error'),'请求方式错误',[]);
