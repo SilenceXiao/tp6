@@ -34,4 +34,18 @@ class User extends Model{
         }
         return $this->where('id',$id)->save($data);
     }
+
+    /**
+     * 根据id获取用户
+     * @param [type] $id
+     * @return void
+     */
+    public function getUserById($id){
+        $id = intval($id);
+        if(empty($id)){
+            return false;
+        }
+        $user = $this->where('id',$id)->find();
+        return $user;
+    }
 }

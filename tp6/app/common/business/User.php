@@ -103,4 +103,19 @@ class User {
     public function updateUserMsgById($id,$data){
         return $this->user->updateDataById($id,$data);
     }
+
+    /**
+     * 通过ID获取用户数据
+     * @param [type] $id
+     * @return void
+     */
+    public function getUserById($id){
+        $user = $this->user->getUserById($id);
+        //用户是否存在
+        if(empty($user) || $user->status != config('status.mysql.table_normal')){
+            return [];
+        }
+        $user = $user->toArray();
+        return $user;
+    }
 }

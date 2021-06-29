@@ -5,6 +5,7 @@ return [
     'error' => 0,
     'action_not_found' => -1,
     'controller_not_found' => -2,
+    'not_login' => -10,
     'admin_user_session' => 'admin_user',
     'mysql'=>[
         'table_normal' => 1, //正常
