@@ -32,4 +32,26 @@ class Category extends Model{
         return $this->where($where)->field($filed)->select();
     }
 
+    /**
+     * 根据分页获取分类列表数据
+     * @param [type] $data
+     * @param integer $num
+     * @return void
+     */
+    public function getLists($data,$num = 10){
+
+        $order = [
+            'order' => 'desc',
+            'id' => 'desc',
+        ];
+        $result = $this->where('status','<>',config('status.mysql.table_delete'))
+            ->where('pid',$data['pid'])
+            ->order($order)
+            ->paginate($num);
+            
+        return $result;
+        // echo $this->getLastSql();exit;
+        
+    }
+
 }

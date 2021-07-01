@@ -44,4 +44,13 @@ class Category {
         }
         return false;
     }
+
+    public function getListsByPid($data,$num){
+
+        $result = $this->categoryObj->getLists($data,$num);
+        if(!$result){
+            return [];
+        }
+        return $result->toArray();
+    }
 }
