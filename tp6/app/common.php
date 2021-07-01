@@ -13,7 +13,7 @@ function show($status,$message='error',$data=[],$httpStatus=200){
     $result = [
         'status' => $status,
         'message' => $message,
-        'data' => $data
+        'result' => $data
     ];
     return json($result,$httpStatus);
 }

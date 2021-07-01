@@ -48,4 +48,18 @@ class User extends Model{
         $user = $this->where('id',$id)->find();
         return $user;
     }
+
+    /**
+     * 根据username获取用户
+     * @param [type] $username
+     * @return void
+     */
+    public function getUserByUsername($username){
+        $username = trim($username);
+        if(empty($username)){
+            return false;
+        }
+        $user = $this->where('username',$username)->find();
+        return $user;
+    }
 }

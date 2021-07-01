@@ -48,6 +48,7 @@ layui.use(['form'], function () {
                 }else{
                     layer.msg(res.message);
                     $('.admin-captcha > img').trigger('click');
+                    $(".input-val").val('');
                     return false;
                 }
             }

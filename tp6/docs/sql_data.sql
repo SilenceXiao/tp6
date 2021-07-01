@@ -40,3 +40,17 @@ CREATE TABLE `mall_user` (
 
 ALTER TABLE `mall_user` 
 ADD COLUMN `token` varchar(255) NULL DEFAULT NULL COMMENT 'token' AFTER `operate_user`;
+
+CREATE TABLE `mall_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pid` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '类名',
+  `path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status` tinyint(1) DEFAULT '0',
+  `icon` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '图标',
+  `operate_user` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_time` datetime DEFAULT NULL,
+  `updated_time` datetime DEFAULT NULL,
+  `order` int(11) DEFAULT NULL COMMENT '排序',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

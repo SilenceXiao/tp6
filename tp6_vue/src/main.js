@@ -38,7 +38,6 @@ iView.Notice.config({
     duration: 3
 });
 Vue.config.productionTip = false;
-
 new Vue({
     router,
     store,

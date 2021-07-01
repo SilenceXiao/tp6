@@ -14,7 +14,7 @@ class Sms {
      */
     public function sendCode() :object{
 
-        $phoneNumber = request()->param('phone','','trim');
+        $phoneNumber = request()->param('phone_number','','trim');
         // $phoneNumber = '18681653982';
         $data = [
             'phone' => $phoneNumber,

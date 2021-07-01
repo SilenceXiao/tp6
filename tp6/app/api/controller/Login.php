@@ -8,7 +8,7 @@ use think\facade\Db;
 
 class Login extends BaseController{
 
-    public function login(){
+    public function index(){
         $type = $this->request->param('type','','trim');
         $code = $this->request->param('code','','intval');
         $phone_number = $this->request->param('phone_number','','trim');

@@ -13,6 +13,7 @@ class User extends Validate{
         'phone' => 'require|mobile',
         'code' => 'require',
         'type' => ['require', 'in'=>'1,2'],
+        'sex' => ['require', 'in'=>'0,1,2'],
         
     ];
 
@@ -23,10 +24,12 @@ class User extends Validate{
         'phone.require' => '电话号码必须',
         'type.require' => '登录类型必须',
         'type.in' => '登录类型错误',
+        'sex.in' => '性别数据错误',
     ];
 
     protected $scene = [
         'send_code' => ['phone'],
         'login' => ['phone','code','type'],
+        'update_user' => ['username','sex']
     ];
 }

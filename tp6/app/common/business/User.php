@@ -40,11 +40,11 @@ class User {
         if($tokenExist){
             // Cache::delete(config('redis.user_token_pre').$user['token']);
             $token = $user['token'];
+        }else{
+            $token = Str::getLoginToken($data['phone']);
         }
 
         //生成token
-        $token = Str::getLoginToken($data['phone']);
-
         $redisData = [
             'id' => $user['id'],
             'username' => $user['username'],
@@ -69,6 +69,44 @@ class User {
 
         return false;
     }
+
+
+    /**
+     * 用户更新业务层
+     * @param [type] $data
+     * @return void
+     */
+    public function update($id,$data,$token){
+        //查看系统是否存在该用户
+        $userSystem = $this->getUserById($id);
+        if( empty($userSystem) ){
+            throw new \think\Exception('用户不存在系统');
+        }
+        
+        //检测新用户名是否已存在
+        $userResult = $this->getUserByUsername($data['username']);
+        if(!empty($userResult) && $userResult['id'] != $id){
+            throw new \think\Exception('用户名已存在');
+        }
+        
+        //更新数据
+        $this->updateUserMsgById($id,$data);
+
+        //获取用户信息
+        $user = $this->getUserById($id);
+
+        //数据更新后需要更新redis数据
+        $data = [
+            'id' => $user['id'],
+            'username' => $user['username'],
+            'phone_number' => $user['phone_number'],
+            'token' => $user['token']
+        ];
+
+        cache(config('redis.user_token_pre').$token,$data,Time::userLoginExpireTime($user['type']));
+        return $data;
+    }
+
 
     /**
      * 根据用户名获取信息
@@ -111,6 +149,21 @@ class User {
      */
     public function getUserById($id){
         $user = $this->user->getUserById($id);
+        //用户是否存在
+        if(empty($user) || $user->status != config('status.mysql.table_normal')){
+            return [];
+        }
+        $user = $user->toArray();
+        return $user;
+    }
+
+    /**
+     * 通过username获取用户数据
+     * @param [type] $id
+     * @return void
+     */
+    public function getUserByUsername($username){
+        $user = $this->user->getUserByUsername($username);
         //用户是否存在
         if(empty($user) || $user->status != config('status.mysql.table_normal')){
             return [];

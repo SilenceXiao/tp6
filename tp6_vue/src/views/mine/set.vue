@@ -89,6 +89,10 @@
                     return;
                 }
                 let result =await updateUser({"username":this.username,"sex":this.sex});
+                console.log('*************',result);
+                // this.username = result.result.username;
+                localStorage.setItem("username", result.result.username);
+                location.reload();
                 this.$Message.success(result.message);
             }
         }
