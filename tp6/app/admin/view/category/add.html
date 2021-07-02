@@ -98,7 +98,9 @@
                 success: (res) => {
                     if( res.status == 1 ){
                         layer.msg(res.message, function () {
-                            window.location.reload();
+                            // layer.close();
+                            window.location="{:url('index')}";
+                            // window.location.reload();
                         });
 
                     }else{

@@ -49,8 +49,8 @@ CREATE TABLE `mall_category` (
   `status` tinyint(1) DEFAULT '0',
   `icon` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '图标',
   `operate_user` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_time` datetime DEFAULT NULL,
-  `updated_time` datetime DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
   `order` int(11) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

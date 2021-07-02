@@ -30,7 +30,7 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <button type="button" class="layui-btn add">添 加</button>
+        <a href="{:url('admin/category/add')}"><button type="button" class="layui-btn add">添 加</button></a>
 
         <div class="layui-form" style="margin-top: 20px;">
             <table class="layui-table">
@@ -72,26 +72,26 @@
                         </div>
                     </td>
                     <td>
-                        {$list.created_time}
+                        {$list.create_time}
                     </td>
                     <td>
-                        {$list.updated_time}
+                        {$list.update_time}
                     </td>
                     <td>
                         {$list.operate_user}
                     </td>
                     
-                    <td data-id="1">
-                        <input type="checkbox" checked="{if $list.status == 1} checked{else/} {/if}" name="status" lay-skin="switch"
-                            lay-filter="switchTest"
+                    <td data-id="{$list.id}">
+                        <input type="checkbox" {if $list.status == 1}checked{/if} name="status" lay-skin="switch"
+                            lay-filter="switchStatus"
                             lay-text="ON|OFF">
                     </td>
 
 
                     <td>
-                        <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete del-child" data-ptype="1"
-                           lay-event="delete" data-id="$id">删除</a>
-                        <a href="{:url('index',['pid' => $list.id ])}">获取子栏目</a>
+                        <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete delete_category" data-ptype="1"
+                           lay-event="delete" data-id="{$list.id}">删除</a>
+                        <a class="layui-btn layui-btn-xs layui-btn-normal" href="{:url('index',['pid' => $list.id ])}">子栏目({$list.childCount})</a>
                     </td>
                 </tr>
                 {/volist}
@@ -99,6 +99,7 @@
                 </tbody>
             </table>
         </div>
+        <!-- {$categoryList.page | raw} -->
         <div id="pages"></div>
     </div>
 
@@ -114,26 +115,49 @@
 
         laypage.render({ //分页
             elem: 'pages'
-            , count: 100
+            , count: {$categoryList.total}
+            , limit: {$categoryList.per_page}
+            , curr: {$categoryList.current_page}
+            , last: {$categoryList.last_page}
             , theme: '#FFB800'
+            ,jump: function(obj, first){
+                //obj包含了当前分页的所有参数，比如：
+                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                console.log(obj.limit); //得到每页显示的条数
+                
+                //首次不执行
+                if(!first){
+                    window.location.href="{:url('category/')}?page="+obj.curr;
+                }
+            }
         });
 
 
         // 添加 分类
-        $('.add').on('click', function () {
-            layObj.dialog("{:url('admin/category/add')}")
-        });
+        // $('.add').on('click', function () {
+        //     layObj.dialog("{:url('admin/category/add')}")
+        // });
 
         //监听状态 更改
-        form.on('switch(switchTest)', function (obj) {
+        form.on('switch(switchStatus)', function (obj) {
             console.log(obj.elem.checked, '改变状态')
 
             let id = obj.othis.parent().attr('data-id');
             let status = obj.elem.checked ? 1 : 0;
             $.ajax({
-                url: '{:url("admin/change")}?id=' + id + '&status=' + status,
+                url: '{:url("category/changestatus")}',
+                type: 'post',
+                data: {
+                    id: id,
+                    status : status,
+                },
                 success: (res) => {
-
+                    if(res.status == 1){
+                        layer.msg(res.message);
+                        window.location.reload();
+                    }else{
+                        layer.msg(res.message);
+                    }
                 }
             });
             return false;
@@ -164,8 +188,8 @@
             })
         }
 
-        // 删除二级分类
-        $('.del-child').on('click', function () {
+        // 删除一级分类
+        $('.delete_category').on('click', function () {
             let ptype = $(this).attr('data-ptype'); // fu
             let id = $(this).attr('data-id'); // fu
             let msg = '';
@@ -174,10 +198,17 @@
             } else if (ptype == 2) {
                 msg = '二';
             }
+            // _this = $(this);
             layObj.box(`是否删除${msg}级分类`, () => {
-                let   url = '{:url("admin/del")}?id=' + id
+                let url = '{:url("category/changestatus")}?id=' + id +'&status=99'
                 layObj.get(url,  (res) =>{
-                    $(this).parent().remove()
+                    if(res.status == 1){
+                        layer.msg('删除成功');
+                        window.location.reload();
+                        // _this.parent().remove()
+                    }else{
+                        layer.msg('删除失败');
+                    }
                 })
 
             })
@@ -190,9 +221,14 @@
             if(!val){
                 return;
             }
-            // let url = '{:url("admin/sort")}?id=' + id + '&sort='+val;
-            let url = 'http:www.baidu.com';
+            let url = '{:url("category/orderlist")}?id=' + id + '&order='+val;
             layObj.get(url,function (res) {
+                if(res.status == 1){
+                    layer.msg(res.message);
+                    window.location.reload();
+                }else{
+                    layer.msg(res.message);
+                }
                 console.log(res, 'sort');
             })
 

@@ -10,7 +10,7 @@ class AdminBase extends BaseController{
 
     public function initialize(){
         parent::initialize();
-
+        $this->isLogin();
         // if(!$this->isLogin()){
         //     return $this->redirect(url('login/index'),302);
         // }

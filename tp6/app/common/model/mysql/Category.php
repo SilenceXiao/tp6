@@ -4,7 +4,10 @@ namespace app\common\model\mysql;
 use think\Model;
 
 class Category extends Model{
-    
+
+    //自动时间戳
+    protected $autoWriteTimestamp = 'datetime';
+
     /**
      * 根据pid 和 类名获取分类数据
      * @param array $data
@@ -54,4 +57,27 @@ class Category extends Model{
         
     }
 
+    /**
+     * 修改数据byID
+     * @param [type] $data
+     * @return void
+     */
+    public function upateDataById($id,$data){
+        return $this->update($data);
+    }
+    
+    /**
+     * 获取每个分类下的子栏目数量
+     * @param [type] $pids
+     * @return void
+     */
+    public function getChildcountByPids($pids){
+        $where[] = ['pid','in',$pids];
+        $where[] = ['status','<>',config('status.mysql.table_delete')];
+        $result = $this->where($where)
+            ->field(['pid','count(*) as childCount'])
+            ->group('pid')
+            ->select();
+        return $result;
+    }
 }
