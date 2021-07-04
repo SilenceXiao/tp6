@@ -89,9 +89,6 @@ class Category {
         if(!$res){
             throw new \think\Exception('数据不存在');
         }
-        if($res->status == $data['status']){
-            throw new \think\Exception('状态一样');
-        }
         
         $result = $this->categoryObj->upateDataById($id,$data);
         if(!$result){
@@ -117,6 +114,9 @@ class Category {
         $res = $this->getCategoryById($id);
         if(!$res){
             throw new \think\Exception('数据不存在');
+        }
+        if($res->status == $data['status']){
+            throw new \think\Exception('状态一样');
         }
         
         $result = $this->categoryObj->upateDataById($id,$data);

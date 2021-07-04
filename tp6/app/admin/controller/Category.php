@@ -20,7 +20,7 @@ class Category extends AdminBase{
             $lists = [];
         }
         // halt($lists);
-        return View::fetch('index',['categoryList' => $lists]);
+        return View::fetch('index',['categoryList' => $lists,'pid' => $pid]);
     }
 
     /**
@@ -89,7 +89,6 @@ class Category extends AdminBase{
         }
 
         try {
-
             $result = (new CategoryBusiness())->orderList($id,$data);
         } catch (\Exception $e) {
             return show(config('status.error'),$e->getMessage());
