@@ -128,5 +128,21 @@ class Category extends AdminBase{
         }
         return show(config('status.error'),'状态修改失败');
     }
+
+    public function edit(){
+        $id = input('id',0,'intval');
+        $categories = (new CategoryBusiness())->getCategories();
+        if(!$categories) {
+            $categories = [];
+        }
+
+        $currentCategory = (new CategoryBusiness())->getCategoryById($id);
+        $categories = json_encode($categories);
+        return View::fetch('edit',[
+            'id' => $id,
+            'currentCategory' => $currentCategory,
+            'categories' => $categories,
+        ]);
+    }
     
 }

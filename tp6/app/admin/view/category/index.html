@@ -48,7 +48,7 @@
                     <col width="130">
                     <col width="70">
                     <col width="70">
-                    <col width="85">
+                    <col width="130">
                 </colgroup>
                 <thead>
                 <tr>
@@ -97,6 +97,7 @@
                     <td>
                         <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete delete_category" data-ptype="1"
                            lay-event="delete" data-id="{$list.id}">删除</a>
+                        <a class="layui-btn layui-btn-xs layui-btn-normal" href="{:url('admin/category/edit',['id' => $list.id])}">编辑</a>
                         <a class="layui-btn layui-btn-xs layui-btn-normal" href="{:url('index',['pid' => $list.id ])}">子栏目({$list.childCount})</a>
                     </td>
                 </tr>
