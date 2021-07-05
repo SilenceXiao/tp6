@@ -60,12 +60,18 @@
             var data = {$categories|raw}
 
             let toTrees = toTree(data);
+            console.log(toTrees)
             for (let item of toTrees) {
                 temps += `<optgroup  data-id="${item["id"]}">`;
                 temps += `<option  data-id="${item['id']}" value="${item['id']}">-| ${item["name"]}</option>`
                 if (item['children'] && item['children'].length > 0) {
                     for (let child of item['children']) {
                         temps += `<option  data-id="${child['id']}" value="${child['id']}"> &nbsp;&nbsp;&nbsp;--| ${child["name"]} </option>`
+                        if (child['children'] && child['children'].length > 0) {
+                            for (let child_3 of child['children']) {
+                                temps += `<option  data-id="${child_3['id']}" value="${child_3['id']}">&nbsp;&nbsp;&nbsp;&nbsp;---| ${child_3["name"]} </option>`
+                            }
+                        }
                     }
                 }
                 temps += `</optgroup>`;

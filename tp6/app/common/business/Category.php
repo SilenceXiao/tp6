@@ -46,6 +46,19 @@ class Category {
     }
 
     /**
+     * 获取分类数据
+     * @return void
+     */
+    public function getAllCategories(){
+        $filed = "id as category_id,name,pid";
+        $result = $this->categoryObj->getCategories($filed);
+        if($result){
+            return $result->toArray();
+        }
+        return false;
+    }
+
+    /**
      *
      * @param [type] $data
      * @param [type] $num
