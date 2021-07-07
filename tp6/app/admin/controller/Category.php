@@ -144,5 +144,35 @@ class Category extends AdminBase{
             'categories' => $categories,
         ]);
     }
+
+    /**
+     * 编辑类名
+     * @return void
+     */
+    public function editCategory(){
+        $id = input('id',0,'intval');
+        $name = input('name',0,'trim');
+        $pid = input('pid',0,'intval');
+       
+        $data = [
+            'id' => $id,
+            'name' => $name,
+            'pid' => $pid
+        ];
+        $validate = new ValidateCategory();
+        if(!$validate->scene('changename')->check($data)){
+            return show(config('status.error'),$validate->getError());
+        }
+        try {
+            $result = (new CategoryBusiness())->editCategory($id,$data);
+        } catch (\Exception $e) {
+           return show(config('status.error'),'修改失败,内部异常');
+        }
+       
+        if($result){
+            return show(config('status.success'),'修改成功');
+        }
+        return show(config('status.error'),'修改失败');
+    }
     
 }

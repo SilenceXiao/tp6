@@ -138,4 +138,23 @@ class Category {
         }
         return $result;
     }
+
+    /**
+     *
+     * @param [type] $id
+     * @param [type] $data
+     * @return void
+     */
+    public function editCategory($id,array $data){
+        $categoryExists = $this->categoryObj->getCategoryByNameAndPid($data);
+        if($categoryExists){
+            throw new \think\Exception('当前层级下已存在该类名');
+        }
+
+        $result = $this->categoryObj->upateDataById($id,['name' => $data['name'],'id'=>$id]);
+        if(!$result){
+            return false;
+        }
+        return $result;
+    }
 }

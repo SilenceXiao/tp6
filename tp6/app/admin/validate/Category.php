@@ -29,7 +29,8 @@ class Category extends Validate{
     protected $scene = [
         'add' => ['name','pid'],
         'orderlist' => ['order','id'],
-        'changestatus' => ['id','status']
+        'changestatus' => ['id','status'],
+        'changename' => ['id','name','pid']
     ];
 
     public function statusIn(){

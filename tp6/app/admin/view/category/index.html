@@ -31,14 +31,14 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
         <a href="{:url('admin/category/add')}"><button type="button" class="layui-btn add">添 加</button></a>
+        <div class="layui-elem-quote" style="margin-top: 10px;">
+            <a href="javascript:;"><b>当前路径：</b></a>
+            <span class="layui-breadcrumb" lay-separator=">">
+                <a href="{:url('index')}">分类首页</a>
+                    <a href="{:url('index', ['pid' => $pid])}">123</a>
+            </span>
+        </div>
         <div class="layui-form" style="margin-top: 20px;">
-            <div class="layui-elem-quote" style="margin-top: 10px;">
-                <a href="javascript:;"><b>当前路径：</b></a>
-                <span class="layui-breadcrumb" lay-separator=">">
-                    <a href="{:url('index')}">分类首页</a>
-                        <a href="{:url('index', ['pid' => $pid])}">123</a>
-                </span>
-            </div>
             <table class="layui-table">
                 <colgroup>
                     <col width="40">
