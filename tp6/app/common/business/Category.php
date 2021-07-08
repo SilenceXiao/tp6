@@ -59,7 +59,7 @@ class Category {
     }
 
     /**
-     *
+     * 获取分类列表数据
      * @param [type] $data
      * @param [type] $num
      * @return void
@@ -74,6 +74,7 @@ class Category {
         $pids = array_column($results['data'],'id');
         $pidColumns = [];
         if($pids){
+            //获取子栏目数据
             $pidColumns = $this->categoryObj->getChildcountByPids($pids);
             $pidColumns = $pidColumns->toArray();
         }
@@ -177,6 +178,7 @@ class Category {
         }
 
         $tree[] = $res;
+        //以当前数据为底层往上层寻找父级
         while ($res['pid'] > 0 ) {
             $res = $this->getCategoryById($res['pid']);
             if($res){
