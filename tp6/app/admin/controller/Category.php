@@ -16,11 +16,20 @@ class Category extends AdminBase{
             'pid' => $pid,
         ];
         $lists = (new CategoryBusiness())->getListsByPid($data,$num = 5);
+
+        //获取面包屑数据
+        $breadCrumbs = (new CategoryBusiness())->getBreadCrumb($pid);
+
         if(!$lists){
             $lists = [];
         }
+
         // halt($lists);
-        return View::fetch('index',['categoryList' => $lists,'pid' => $pid]);
+        return View::fetch('index',[
+            'categoryList' => $lists,
+            'pid' => $pid,
+            'breadCrumbs' => $breadCrumbs
+        ]);
     }
 
     /**
@@ -138,10 +147,13 @@ class Category extends AdminBase{
 
         $currentCategory = (new CategoryBusiness())->getCategoryById($id);
         $categories = json_encode($categories);
+        //获取面包屑数据
+        $breadCrumbs = (new CategoryBusiness())->getBreadCrumb($id);
         return View::fetch('edit',[
             'id' => $id,
             'currentCategory' => $currentCategory,
             'categories' => $categories,
+            'breadCrumbs' => $breadCrumbs,
         ]);
     }
 

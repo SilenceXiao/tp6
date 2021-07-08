@@ -34,8 +34,10 @@
         <div class="layui-elem-quote" style="margin-top: 10px;">
             <a href="javascript:;"><b>当前路径：</b></a>
             <span class="layui-breadcrumb" lay-separator=">">
-                <a href="{:url('index')}">分类首页</a>
-                    <a href="{:url('index', ['pid' => $pid])}">123</a>
+                <a href="{:url('index',['pid' => 0 ])}">分类首页</a>
+                    {volist name="breadCrumbs" id ="list"}
+                        <a href="{:url('index', ['pid' => $list.id])}">{$list.name}</a>
+                    {/volist}
             </span>
         </div>
         <div class="layui-form" style="margin-top: 20px;">
@@ -116,7 +118,18 @@
 <script src="{__STATIC_PATH}admin/js/common.js?v5" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
+
+    // layui.use('element', function(){
+    //     var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+    //     //监听导航点击
+    //     element.on('nav(demo)', function(elem){
+    //         //console.log(elem)
+    //         layer.msg(elem.text());
+    //     });
+    // });
+
     layui.use(['form', 'laypage'], function () {
+       
         var form = layui.form
             , laypage = layui.laypage;
 

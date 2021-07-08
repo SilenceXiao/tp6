@@ -123,6 +123,12 @@ class Category {
         return $result->toArray();
     }
 
+    /**
+     * 修改状态
+     * @param [type] $id
+     * @param [type] $data
+     * @return void
+     */
     public function changeStatus($id,$data){
         $res = $this->getCategoryById($id);
         if(!$res){
@@ -156,5 +162,27 @@ class Category {
             return false;
         }
         return $result;
+    }
+
+    /**
+     * 获取面包屑数据
+     * @param [type] $id
+     * @return void
+     */
+    public function getBreadCrumb($id){
+        $res = $this->getCategoryById($id);
+
+        if(!$res){
+            return [];
+        }
+
+        $tree[] = $res;
+        while ($res['pid'] > 0 ) {
+            $res = $this->getCategoryById($res['pid']);
+            if($res){
+                array_unshift($tree,$res);
+            }
+        }
+        return $tree;
     }
 }
