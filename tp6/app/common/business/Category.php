@@ -46,6 +46,20 @@ class Category {
     }
 
     /**
+     * 获取add页面分类数据
+     * @return void
+     */
+    public function getNormalByPid($pid = 0){
+        $filed = "id,name,pid";
+        try {
+            $result = $this->categoryObj->getNormalByPid($pid,$filed);
+        } catch (\Exception $e) {
+            return [];
+        }
+        return $result->toArray();
+    }
+
+    /**
      * 获取分类数据
      * @return void
      */

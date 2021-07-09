@@ -41,6 +41,8 @@ CREATE TABLE `mall_user` (
 ALTER TABLE `mall_user` 
 ADD COLUMN `token` varchar(255) NULL DEFAULT NULL COMMENT 'token' AFTER `operate_user`;
 
+
+DROP TABLE IF EXISTS `mall_category`;
 CREATE TABLE `mall_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pid` int(11) NOT NULL DEFAULT '0',
@@ -54,3 +56,44 @@ CREATE TABLE `mall_category` (
   `order` int(11) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `mall_goods_sku`;
+CREATE TABLE `mall_goods_sku` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品Id',
+  `specs_value_ids` varchar(255) NOT NULL COMMENT '每行规则属性ID 按逗号连接',
+  `price` decimal(10,2) unsigned NOT NULL COMMENT '现价',
+  `cost_price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '原价',
+  `stock` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '库存',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `goods_id` (`goods_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `mall_specs_value`;
+CREATE TABLE `mall_specs_value` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `specs_id` int(10) unsigned NOT NULL COMMENT '规格ID',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '规格属性名',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `operate_user` varchar(100) NOT NULL DEFAULT '',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `specs_id` (`specs_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `mall_specs`;
+CREATE TABLE `mall_specs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '规格名',
+  `order` int(6) DEFAULT '0',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `operate_user` varchar(100) NOT NULL DEFAULT '',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `order` int(6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;

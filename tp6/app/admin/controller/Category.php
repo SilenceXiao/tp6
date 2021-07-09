@@ -187,4 +187,19 @@ class Category extends AdminBase{
         return show(config('status.error'),'修改失败');
     }
     
+
+    /**
+     * 商品新增页面弹框
+     * @return void
+     */
+    public function dialog(){
+        $category = (new CategoryBusiness())->getNormalByPid(); 
+        return View::fetch('',['category' => json_encode($category)]);
+    }
+
+    public function getByPid(){
+        $pid = Input('pid',0,'intval');
+        $category = (new CategoryBusiness())->getNormalByPid($pid); 
+        return show(config('status.success'),'ok',$category);
+    }
 }

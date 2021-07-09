@@ -58,6 +58,29 @@ class Category extends Model{
     }
 
     /**
+     * 根据Pid获取数据
+     * @param [type] $data
+     * @param integer $num
+     * @return void
+     */
+    public function getNormalByPid($pid= 0,$filed){
+
+        $order = [
+            'order' => 'desc',
+            'id' => 'desc',
+        ];
+        $result = $this->where('status','<>',config('status.mysql.table_delete'))
+            ->where('pid',$pid)
+            ->order($order)
+            ->field($filed)
+            ->select();
+            
+        return $result;
+        // echo $this->getLastSql();exit;
+        
+    }
+
+    /**
      * 修改数据byID
      * @param [type] $data
      * @return void

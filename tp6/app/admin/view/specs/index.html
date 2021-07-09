@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="{__STATIC_PATH}admin/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="{__STATIC_PATH}admin/css/public.css" media="all">
+    <style>
+        .inoutCls {
+            height: 22px;
+            line-height: 22px;
+            padding: 0 5px;
+            font-size: 12px;
+            background-color: #1E9FFF;
+            max-width: 80px;
+            border: none;
+            color: #fff;
+            margin-left: 10px;
+            display: inline-block;
+            white-space: nowrap;
+            text-align: center;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <a href="{:url('admin/specs/add')}"><button type="button" class="layui-btn add">添 加</button></a>
+        <div class="layui-elem-quote" style="margin-top: 10px;">
+            <a href="javascript:;"><b>当前路径：</b></a>
+            <span class="layui-breadcrumb" lay-separator=">">
+                <a href="{:url('index')}">规格首页</a>
+            </span>
+        </div>
+        <div class="layui-form" style="margin-top: 20px;">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="40">
+                    <col width="60">
+                    <col width="60">
+                    <col width="70">
+                    <col width="70">
+                    <col width="70">
+                    <col width="70">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>名称</th>
+                    <th>排序</th>
+                    <th class="text-center">创建时间</th>
+                    <th class="text-center">更新时间</th>
+                    <th class="text-center">操作人</th>
+                    <th class="text-center">状 态</th>
+                    <th>操作管理</th>
+                </tr>
+                </thead>
+                <tbody>
+               
+                {volist name="specsList.data" id ="list"}
+                <tr>
+                    <td>
+                        {$list.id}
+                    </td>
+                    <td>
+                        {$list.name}
+                    </td>
+                    <td>
+                        <div class="layui-input-inline">
+                          <input type="text" value="{$list.order}" data-id="{$list.id}" class="changeSort layui-input">
+                        </div>
+                    </td>
+                    <td>
+                        {$list.create_time}
+                    </td>
+                    <td>
+                        {$list.update_time}
+                    </td>
+                    <td>
+                        {$list.operate_user}
+                    </td>
+                    
+                    <td data-id="{$list.id}">
+                        <input type="checkbox" {if $list.status == 1}checked{/if} name="status" lay-skin="switch"
+                            lay-filter="switchStatus"
+                            lay-text="ON|OFF">
+                    </td>
+
+
+                    <td>
+                        <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete delete_category" data-ptype="1"
+                           lay-event="delete" data-id="{$list.id}">删除</a>
+                        <a class="layui-btn layui-btn-xs layui-btn-normal" href="{:url('admin/specs/edit',['id' => $list.id])}">编辑</a>
+                    </td>
+                </tr>
+                {/volist}
+                <!--一级类目循环 end-->
+                </tbody>
+            </table>
+        </div>
+        <div id="pages"></div>
+    </div>
+
+</div>
+<script src="{__STATIC_PATH}admin/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script src="{__STATIC_PATH}admin/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script src="{__STATIC_PATH}admin/js/common.js?v5" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+
+    layui.use(['form', 'laypage'], function () {
+       
+        var form = layui.form
+            , laypage = layui.laypage;
+
+        laypage.render({ //分页
+            elem: 'pages'
+            , count: {$specsList.total}
+            , limit: {$specsList.per_page}
+            , curr: {$specsList.current_page}
+            , last: {$specsList.last_page}
+            , theme: '#FFB800'
+            ,jump: function(obj, first){
+                //obj包含了当前分页的所有参数，比如：
+                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                console.log(obj.limit); //得到每页显示的条数
+                
+                //首次不执行
+                if(!first){
+                    window.location.href="{:url('specs/')}?page="+obj.curr;
+                }
+            }
+        });
+
+
+        // 添加 分类
+        // $('.add').on('click', function () {
+        //     layObj.dialog("{:url('admin/category/add')}")
+        // });
+
+        //监听状态 更改
+        form.on('switch(switchStatus)', function (obj) {
+            console.log(obj.elem.checked, '改变状态')
+
+            let id = obj.othis.parent().attr('data-id');
+            let status = obj.elem.checked ? 1 : 0;
+            $.ajax({
+                url: '{:url("specs/changestatus")}',
+                type: 'post',
+                data: {
+                    id: id,
+                    status : status,
+                },
+                success: (res) => {
+                    if(res.status == 1){
+                        layer.msg(res.message);
+                        window.location.reload();
+                    }else{
+                        layer.msg(res.message);
+                    }
+                }
+            });
+            return false;
+        });
+
+
+        
+
+        // 删除一级分类
+        $('.delete_category').on('click', function () {
+            let ptype = $(this).attr('data-ptype'); // fu
+            let id = $(this).attr('data-id'); // fu
+            let msg = '';
+            if (ptype == 1) { // 等级类目
+                msg = '一';
+            } else if (ptype == 2) {
+                msg = '二';
+            }
+            // _this = $(this);
+            layObj.box(`是否删除${msg}级分类`, () => {
+                let url = '{:url("specs/changestatus")}?id=' + id +'&status=99'
+                layObj.get(url,  (res) =>{
+                    if(res.status == 1){
+                        layer.msg('删除成功');
+                        window.location.reload();
+                        // _this.parent().remove()
+                    }else{
+                        layer.msg('删除失败');
+                    }
+                })
+
+            })
+        })
+
+        $('.changeSort').on('change',function () {
+            let id = $(this).attr('data-id');
+            let val = $(this).val();
+
+            if(!val){
+                return;
+            }
+            let url = '{:url("specs/orderlist")}?id=' + id + '&order='+val;
+            layObj.get(url,function (res) {
+                if(res.status == 1){
+                    layer.msg(res.message);
+                    window.location.reload();
+                }else{
+                    layer.msg(res.message);
+                }
+            })
+
+        })
+
+    })
+</script>
+</body>
+</html>
