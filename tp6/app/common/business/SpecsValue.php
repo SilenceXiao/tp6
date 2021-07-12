@@ -1,10 +1,31 @@
 <?php
 namespace app\common\business;
 
-class SpecsValue{
+use app\common\model\mysql\SpecsValue as MysqlSpecsValue;
+use think\Exception;
 
-    public function getBySpecsId(){
-        $specs_id = input('specs_id',0,'intval');
-        
+class SpecsValue extends BusnBase{
+
+    public function __construct()
+    {
+        $this->model = new MysqlSpecsValue();
     }
+
+    
+    public function getBySpecsId($data,$field ='id,specs_id,name'){
+
+        try {
+            $result = $this->model->getBySpecsId($data,$field);
+        } catch (\Exception $e) {
+           throw new Exception($e->getMessage());
+        }
+
+        $results = $result->toArray();
+        if($results){
+            return $results;
+        }
+
+        return [];
+    }
+
 }

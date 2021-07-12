@@ -18,7 +18,7 @@ const layObj = {
     dialog(temp) {
         layer.open({
             type: 2
-            , area: ['600px', '500px']
+            , area: ['800px', '500px']
             , title: '添加分类'
             , shade: 0.6 //遮罩透明度
             , maxmin: false //允许全屏最小化

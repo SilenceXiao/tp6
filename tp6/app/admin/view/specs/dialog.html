@@ -32,7 +32,7 @@
         }
 
         .more-right {
-            width: 400px;
+            width: 500px;
         }
 
         .spec-title {
@@ -63,17 +63,17 @@
         </div>
     </div>
 </div>
-
 <div class="layui-inline more-right">
     <div class="spec-title">选择规格值[可多选] <input type="text" id="add-spec-tags"
                                               style="padding-left: 5px; width: 252px;margin-left: 10px;display:inline-block;"
                                               placeholder="新增规格名、按回车键确定添加" autocomplete="off" class="layui-input"></div>
     <div class="layui-input-inline">
         <div class="spec-right">
-            <p class="tip-font">请选择左侧规格列表</p>
+            <!-- <p class="tip-font">请选择左侧规格列表</p> -->
         </div>
     </div>
 </div>
+
 
 <div class="layui-input-block"></div>
 <button class="layui-btn classify-btn" style="margin-left:240px;">确 定</button>
@@ -153,7 +153,7 @@
 
         // 删除规格值按钮
         $('html').on('click', '.del-child-tags', function () {
-            $(this).parent().remove()
+            // $(this).parent().remove();
             // var index = parent.layer.getFrameIndex(window.name);
             // parent.layer.close(index);
         })
@@ -166,7 +166,7 @@
             }
             if (e.which === 13) {
                 let tags = $(this).val();
-                url = "/admin/specsValue/save?specs_id="+specs_id+"&name="+tags;
+                url = "/admin/specsValue/add?specs_id="+specs_id+"&name="+tags;
                 layObj.get(url, function (res) {
                     if(res.status != 1) {
                         layer.msg("添加失败，请稍候重试");

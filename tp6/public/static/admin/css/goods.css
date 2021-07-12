@@ -29,7 +29,7 @@
 }
 
 .control-group {
-    overflow: hidden;
+    /* overflow: hidden;、 */
 }
 
 .control-group a {
